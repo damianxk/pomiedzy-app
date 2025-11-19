@@ -7,27 +7,27 @@ import gsap from 'gsap';
 const specialists: Specialist[] = [
   {
     id: 1,
-    name: "Anna Kowalska",
-    role: "Mediator Rodzinny & Psycholog",
-    description: "Specjalizuję się w budowaniu mostów tam, gdzie zostały one spalone. Pomagam rodzicom i nastolatkom usłyszeć się nawzajem.",
-    image: "https://picsum.photos/id/64/800/800",
+    name: "Magdalena M.",
+    role: "Mediator Sądowy & Coach ICF",
+    description: "Pracuję nie tylko głową, ale i sercem. Wspieram rodziny i młodzież poprzez mediacje, coaching oraz diagnozę talentów Gallupa. Traktuję potknięcia jako część naszej historii, pomagając przekuć je w siłę.",
+    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=800",
     socials: { linkedin: "#", facebook: "#" }
   },
   {
     id: 2,
-    name: "Piotr Nowak",
-    role: "Trener Efektywnej Nauki",
-    description: "Edukacja to nie tylko stopnie. Uczę jak się uczyć bez stresu i odnajdywać pasję w zdobywaniu wiedzy.",
-    image: "https://picsum.photos/id/91/800/800",
-    socials: { instagram: "#", linkedin: "#" }
+    name: "Aleksandra Z.",
+    role: "Wsparcie Prawne & Edukacja",
+    description: "Łączę perspektywę prawną z empatią. Specjalizuję się w tematach trudnych, tworząc bezpieczną przestrzeń prawną. Wierzę, że wiedza daje siłę i poczucie sensu, a każdy zasługuje na bycie sobą.",
+    image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=800",
+    socials: { linkedin: "#", instagram: "#" }
   },
   {
     id: 3,
-    name: "Mec. Maria Wiśniewska",
-    role: "Radca Prawny",
-    description: "Prawo ma chronić, nie straszyć. Zapewniam wsparcie prawne w sprawach szkolnych, rodzinnych i cyfrowych.",
-    image: "https://picsum.photos/id/331/800/800",
-    socials: { facebook: "#", linkedin: "#" }
+    name: "Kazik Z.",
+    role: "Wsparcie Psychologiczne & Kontakt",
+    description: "Tworzę przestrzeń bez ocen, pośpiechu i presji. Dbam o to, byś czuł się wysłuchany i bezpieczny od pierwszego kontaktu. Wierzę, że szczera rozmowa zmienia więcej niż nam się wydaje.",
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=800",
+    socials: { instagram: "#", facebook: "#" }
   }
 ];
 
