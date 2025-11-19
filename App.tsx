@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -7,6 +8,9 @@ import { Newsletter } from './components/Newsletter';
 import { Contact } from './components/Contact';
 import { FAQ } from './components/FAQ';
 import { ContactForm } from './components/ContactForm';
+import { Values } from './components/Values';
+import { TargetAudience } from './components/TargetAudience';
+import { Testimonials } from './components/Testimonials';
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -37,8 +41,11 @@ const App: React.FC = () => {
       <Navbar />
       <main>
         <Hero />
+        <Values />
         <Services />
+        <TargetAudience />
         <Team />
+        <Testimonials />
         <FAQ />
         <ContactForm />
         <Newsletter />
