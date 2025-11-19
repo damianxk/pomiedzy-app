@@ -109,7 +109,7 @@ export const ContactForm: React.FC = () => {
                   <input 
                     type="tel" 
                     required
-                    placeholder="+48 ... ... ..."
+                    placeholder=""
                     className="peer w-full border-b-2 border-gray-200 bg-transparent py-3 text-brand-dark focus:border-brand-primary focus:outline-none transition-colors font-sans placeholder-gray-300"
                   />
                   <label className="absolute left-0 -top-3.5 text-sm text-gray-500 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-brand-primary font-medium pointer-events-none">
