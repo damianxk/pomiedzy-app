@@ -11,33 +11,23 @@ import { ContactForm } from './components/ContactForm';
 import { Values } from './components/Values';
 import { TargetAudience } from './components/TargetAudience';
 import { Testimonials } from './components/Testimonials';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Register GSAP Plugin globally
+gsap.registerPlugin(ScrollTrigger);
 
 const App: React.FC = () => {
+  // Global setup or cleanups if needed
   useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-          // Optional: Stop observing once revealed
-          // observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.1, // Trigger when 10% of element is visible
-      rootMargin: "0px 0px -50px 0px" // Trigger slightly before bottom of screen
-    });
-
-    // Select all elements with 'reveal' class
-    const hiddenElements = document.querySelectorAll('.reveal');
-    hiddenElements.forEach((el) => observer.observe(el));
-
-    return () => {
-      hiddenElements.forEach((el) => observer.unobserve(el));
-    };
+    // Ensure ScrollTrigger refreshes on resize for accurate positioning
+    const handleResize = () => ScrollTrigger.refresh();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return (
-    <div className="font-sans bg-white text-gray-800 antialiased selection:bg-brand-primary selection:text-white">
+    <div className="font-sans bg-white text-gray-800 antialiased selection:bg-brand-primary selection:text-white overflow-x-hidden">
       <Navbar />
       <main>
         <Hero />

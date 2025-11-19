@@ -1,9 +1,39 @@
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { SectionTitle } from './SectionTitle';
 import { Shield, Eye, Wifi, Clock } from 'lucide-react';
+import gsap from 'gsap';
 
 export const Values: React.FC = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.to(".gsap-fade-up", {
+        scrollTrigger: { trigger: sectionRef.current, start: "top 85%" },
+        y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out",
+        onStart: () => gsap.set(".gsap-fade-up", { visibility: "visible" })
+      });
+
+      gsap.fromTo(".values-left",
+        { x: -50, opacity: 0 },
+        {
+          scrollTrigger: { trigger: ".values-content", start: "top 75%" },
+          x: 0, opacity: 1, duration: 1, ease: "power3.out"
+        }
+      );
+
+      gsap.fromTo(".value-card",
+        { y: 30, opacity: 0 },
+        {
+          scrollTrigger: { trigger: ".values-grid", start: "top 75%" },
+          y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: "power3.out"
+        }
+      );
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
   const values = [
     {
       icon: <Shield size={32} />,
@@ -28,18 +58,16 @@ export const Values: React.FC = () => {
   ];
 
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section ref={sectionRef} className="py-24 bg-white relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="reveal">
-          <SectionTitle 
-            subtitle="Dlaczego Online?" 
-            title="Filozofia Wsparcia Bez Granic" 
-          />
-        </div>
+        <SectionTitle 
+          subtitle="Dlaczego Online?" 
+          title="Filozofia Wsparcia Bez Granic" 
+        />
 
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start mt-16">
+        <div className="values-content grid lg:grid-cols-2 gap-16 lg:gap-24 items-start mt-16">
           {/* Text Column */}
-          <div className="reveal reveal-left space-y-8">
+          <div className="values-left space-y-8">
             <h3 className="font-serif text-3xl font-bold text-brand-dark tracking-tight leading-tight">
               Wsparcie, które przychodzi do Ciebie. <br/>
               <span className="text-brand-primary">Dosłownie.</span>
@@ -58,9 +86,9 @@ export const Values: React.FC = () => {
           </div>
 
           {/* Grid Column */}
-          <div className="grid sm:grid-cols-2 gap-8 reveal reveal-right delay-200">
+          <div className="values-grid grid sm:grid-cols-2 gap-8">
             {values.map((item, idx) => (
-              <div key={idx} className="group p-8 border border-gray-100 bg-brand-light/10 hover:bg-brand-light/30 transition-colors duration-500 rounded-none relative">
+              <div key={idx} className="value-card group p-8 border border-gray-100 bg-brand-light/10 hover:bg-brand-light/30 transition-colors duration-500 rounded-none relative">
                 <div className="absolute top-0 left-0 w-full h-1 bg-brand-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                 <div className="text-brand-dark mb-4 group-hover:text-brand-primary transition-colors">
                   {item.icon}

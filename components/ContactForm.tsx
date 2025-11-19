@@ -1,10 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { SectionTitle } from './SectionTitle';
 import { ArrowRight, CheckCircle2, Clock } from 'lucide-react';
+import gsap from 'gsap';
 
 export const ContactForm: React.FC = () => {
   const [formState, setFormState] = useState<'idle' | 'submitting' | 'success'>('idle');
   const [preferredTime, setPreferredTime] = useState<string>('');
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+       gsap.to(".gsap-fade-up", {
+        scrollTrigger: { trigger: ".contact-title-wrapper", start: "top 85%" },
+        y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out",
+        onStart: () => gsap.set(".gsap-fade-up", { visibility: "visible" })
+      });
+
+      gsap.fromTo(".contact-left",
+        { x: -50, opacity: 0 },
+        {
+          scrollTrigger: { trigger: ".contact-content", start: "top 75%" },
+          x: 0, opacity: 1, duration: 1, ease: "power3.out"
+        }
+      );
+
+      gsap.fromTo(".contact-right",
+        { x: 50, opacity: 0 },
+        {
+          scrollTrigger: { trigger: ".contact-content", start: "top 75%" },
+          x: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.2
+        }
+      );
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,20 +51,22 @@ export const ContactForm: React.FC = () => {
   ];
 
   return (
-    <section id="formularz" className="py-24 bg-gradient-to-b from-white to-stone-50 relative overflow-hidden">
+    <section ref={sectionRef} id="formularz" className="py-24 bg-gradient-to-b from-white to-stone-50 relative overflow-hidden">
       {/* Subtle background decor */}
       <div className="absolute right-0 top-0 w-1/3 h-full bg-brand-light/30 -skew-x-12 translate-x-20 pointer-events-none"></div>
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+        <div className="contact-content grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           
           {/* Left Column: Text */}
-          <div className="pt-8 reveal reveal-left">
-            <SectionTitle 
-              subtitle="Porozmawiajmy" 
-              title="Zrób pierwszy krok ku zmianie" 
-              align="left" 
-            />
+          <div className="contact-left pt-8">
+            <div className="contact-title-wrapper">
+               <SectionTitle 
+                 subtitle="Porozmawiajmy" 
+                 title="Zrób pierwszy krok ku zmianie" 
+                 align="left" 
+               />
+            </div>
             <p className="text-lg text-gray-600 font-sans font-light leading-relaxed mb-8">
               Rozumiemy, że proszenie o pomoc wymaga odwagi. Nasz formularz to bezpieczna przestrzeń. 
               Zostaw nam swój numer, a oddzwonimy, by wysłuchać i wspólnie znaleźć najlepszą ścieżkę wsparcia dla Ciebie lub Twojego dziecka.
@@ -73,7 +104,7 @@ export const ContactForm: React.FC = () => {
           </div>
 
           {/* Right Column: Form */}
-          <div className="reveal reveal-right delay-200 bg-white p-8 md:p-12 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border border-gray-100 relative">
+          <div className="contact-right bg-white p-8 md:p-12 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border border-gray-100 relative">
             {formState === 'success' ? (
               <div className="h-full min-h-[400px] flex flex-col items-center justify-center text-center animate-fade-in">
                 <div className="w-20 h-20 bg-brand-primary/10 rounded-full flex items-center justify-center text-brand-primary mb-6">
@@ -109,7 +140,7 @@ export const ContactForm: React.FC = () => {
                   <input 
                     type="tel" 
                     required
-                    placeholder=""
+                    placeholder="+48 ... ... ..."
                     className="peer w-full border-b-2 border-gray-200 bg-transparent py-3 text-brand-dark focus:border-brand-primary focus:outline-none transition-colors font-sans placeholder-gray-300"
                   />
                   <label className="absolute left-0 -top-3.5 text-sm text-gray-500 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-brand-primary font-medium pointer-events-none">

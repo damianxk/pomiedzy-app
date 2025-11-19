@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from './Button';
 import { ArrowRight, Wifi } from 'lucide-react';
+import gsap from 'gsap';
 
 export const Hero: React.FC = () => {
   const phrases = ["Masz znaczenie.", "W lęku nie jesteś sam.", "Twój głos jest ważny.", "Jesteśmy dla Ciebie."];
   const [currentPhrase, setCurrentPhrase] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -13,20 +15,59 @@ export const Hero: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+      tl.fromTo(".hero-badge", 
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, delay: 0.2 }
+      )
+      .fromTo(".hero-title", 
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, stagger: 0.1 }, 
+        "-=0.4"
+      )
+      .fromTo(".hero-text",
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8 },
+        "-=0.6"
+      )
+      .fromTo(".hero-btns",
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8 },
+        "-=0.6"
+      )
+      .fromTo(".hero-image-container",
+        { x: 50, opacity: 0 },
+        { x: 0, opacity: 1, duration: 1.2 },
+        "-=0.8"
+      )
+      .fromTo(".hero-decor",
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 1, stagger: 0.2 },
+        "-=1"
+      );
+
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-brand-light">
+    <section ref={containerRef} className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-brand-light">
       {/* Background Decor */}
       <div className="absolute top-0 right-0 w-2/3 h-full bg-brand-soft/20 rounded-l-[300px] translate-x-1/4 z-0 pointer-events-none"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-brand-accent/5 rounded-full blur-3xl z-0 pointer-events-none"></div>
 
       <div className="container mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
         <div className="space-y-10">
-          <div className="reveal reveal-left inline-flex items-center gap-2 px-4 py-2 rounded-none border-l-4 border-brand-primary bg-white shadow-sm text-brand-dark text-sm font-semibold">
+          <div className="hero-badge inline-flex items-center gap-2 px-4 py-2 rounded-none border-l-4 border-brand-primary bg-white shadow-sm text-brand-dark text-sm font-semibold opacity-0">
             <Wifi size={16} className="text-brand-primary" />
             <span>Wsparcie online - bez wychodzenia z domu</span>
           </div>
           
-          <h1 className="reveal reveal-left delay-100 font-serif text-6xl lg:text-8xl text-brand-dark font-bold tracking-tight leading-[1.05]">
+          <h1 className="hero-title font-serif text-6xl lg:text-8xl text-brand-dark font-bold tracking-tight leading-[1.05] opacity-0">
             Jesteśmy tu, <br />
             <span className="relative inline-block">
               <span className="relative z-10 text-brand-primary">Pomiędzy</span>
@@ -38,12 +79,12 @@ export const Hero: React.FC = () => {
             Tobą a Światem.
           </h1>
           
-          <p className="reveal reveal-left delay-200 text-xl text-gray-600 font-light leading-relaxed max-w-lg">
+          <p className="hero-text text-xl text-gray-600 font-light leading-relaxed max-w-lg opacity-0">
             Wirtualna przestrzeń dialogu. Mediacje, coaching, prawo i nauka. 
             Łączymy się z Tobą online, byś mógł odnaleźć równowagę w bezpiecznym otoczeniu.
           </p>
 
-          <div className="reveal reveal-left delay-300 flex flex-col sm:flex-row gap-4">
+          <div className="hero-btns flex flex-col sm:flex-row gap-4 opacity-0">
             <button className="bg-brand-dark text-white px-8 py-4 text-base font-bold hover:bg-brand-primary transition-all duration-300 shadow-lg hover:shadow-brand-primary/30 flex items-center justify-center gap-3">
               Umów spotkanie online <ArrowRight size={20} />
             </button>
@@ -53,7 +94,7 @@ export const Hero: React.FC = () => {
           </div>
         </div>
 
-        <div className="relative reveal reveal-right delay-200">
+        <div className="hero-image-container relative opacity-0">
           <div className="relative overflow-hidden shadow-2xl border-[12px] border-white">
             <img 
               src="https://picsum.photos/id/338/800/1000" 
@@ -80,8 +121,8 @@ export const Hero: React.FC = () => {
           </div>
           
           {/* Decorative Element */}
-          <div className="absolute -top-6 -right-6 w-24 h-24 bg-brand-accent/20 -z-10"></div>
-          <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-brand-primary/20 -z-10"></div>
+          <div className="hero-decor absolute -top-6 -right-6 w-24 h-24 bg-brand-accent/20 -z-10"></div>
+          <div className="hero-decor absolute -bottom-6 -left-6 w-24 h-24 bg-brand-primary/20 -z-10"></div>
         </div>
       </div>
     </section>

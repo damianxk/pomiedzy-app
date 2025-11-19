@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { SectionTitle } from './SectionTitle';
 import { Instagram, Linkedin, Facebook, ArrowRight } from 'lucide-react';
 import { Specialist } from '../types';
+import gsap from 'gsap';
 
 const specialists: Specialist[] = [
   {
@@ -31,21 +32,43 @@ const specialists: Specialist[] = [
 ];
 
 export const Team: React.FC = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Re-use title animation logic manually or rely on the global one if scoped correctly.
+      // Here we define it explicitly for this section context.
+      gsap.to(".gsap-fade-up", {
+        scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
+        y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out",
+        onStart: () => gsap.set(".gsap-fade-up", { visibility: "visible" })
+      });
+
+      gsap.fromTo(".team-card", 
+        { y: 60, opacity: 0 },
+        { 
+          scrollTrigger: { trigger: ".team-grid", start: "top 75%" },
+          y: 0, opacity: 1, duration: 0.8, stagger: 0.2, ease: "power3.out"
+        }
+      );
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section 
+      ref={sectionRef}
       id="zespol" 
       className="py-20 md:py-32 bg-gradient-to-b from-white via-brand-light/30 to-white relative overflow-hidden"
     >
       <div className="container mx-auto px-6 relative z-10">
-        <div className="reveal">
-            <SectionTitle subtitle="Eksperci Pomiędzy" title="Zespół Wsparcia" />
-        </div>
+        <SectionTitle subtitle="Eksperci Pomiędzy" title="Zespół Wsparcia" />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 mt-12 md:mt-20">
+        <div className="team-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 mt-12 md:mt-20">
           {specialists.map((person, idx) => (
             <div 
               key={person.id} 
-              className={`reveal delay-${(idx + 1) * 100} group relative bg-white shadow-sm hover:shadow-[0_20px_50px_rgba(45,212,191,0.15)] transition-all duration-500 ease-out border border-gray-100 hover:border-brand-primary/20 w-full flex flex-col rounded-none`}
+              className="team-card group relative bg-white shadow-sm hover:shadow-[0_20px_50px_rgba(45,212,191,0.15)] transition-all duration-500 ease-out border border-gray-100 hover:border-brand-primary/20 w-full flex flex-col rounded-none"
             >
               {/* Image Container - Static, no zoom */}
               <div className="relative h-80 md:h-96 w-full overflow-hidden shrink-0">

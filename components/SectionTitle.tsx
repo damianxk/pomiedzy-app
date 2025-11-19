@@ -13,14 +13,14 @@ export const SectionTitle: React.FC<SectionTitleProps> = ({ subtitle, title, ali
   const subColor = light ? 'text-teal-100' : 'text-teal-600';
 
   return (
-    <div className={`max-w-3xl mb-16 ${alignment}`}>
-      <span className={`uppercase tracking-widest text-sm font-bold ${subColor} mb-4 block font-sans`}>
+    <div className={`max-w-3xl mb-16 ${alignment} section-title-container`}>
+      <span className={`uppercase tracking-widest text-sm font-bold ${subColor} mb-4 block font-sans gsap-fade-up`}>
         {subtitle}
       </span>
-      <h2 className={`font-serif text-4xl md:text-6xl ${textColor} font-bold tracking-tight leading-[1.1]`}>
+      <h2 className={`font-serif text-4xl md:text-6xl ${textColor} font-bold tracking-tight leading-[1.1] gsap-fade-up`}>
         {title}
       </h2>
-      <div className={`h-1.5 w-24 bg-brand-accent mt-8 ${align === 'center' ? 'mx-auto' : ''} rounded-full`}></div>
+      <div className={`h-1.5 w-24 bg-brand-accent mt-8 ${align === 'center' ? 'mx-auto' : 'origin-left'} rounded-full gsap-scale-up`}></div>
     </div>
   );
 };

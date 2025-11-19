@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { SectionTitle } from './SectionTitle';
 import { Scale, Heart, GraduationCap, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { ServicePillar } from '../types';
+import gsap from 'gsap';
 
 const services: ServicePillar[] = [
   {
@@ -28,21 +29,47 @@ const services: ServicePillar[] = [
 ];
 
 export const Services: React.FC = () => {
-  return (
-    <section id="oferta" className="py-24 bg-gradient-to-b from-brand-light via-white to-white relative">
-       <div className="container mx-auto px-6">
-         <div className="reveal">
-            <SectionTitle 
-                subtitle="Nasze Filary" 
-                title="Kompleksowe wsparcie w trzech wymiarach" 
-            />
-         </div>
+  const sectionRef = useRef<HTMLDivElement>(null);
 
-         <div className="grid md:grid-cols-3 gap-8 mt-16">
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Title animation
+      gsap.to(".gsap-fade-up", {
+        scrollTrigger: { trigger: ".section-title-container", start: "top 85%" },
+        y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out",
+        onStart: () => gsap.set(".gsap-fade-up", { visibility: "visible" })
+      });
+      
+      gsap.to(".gsap-scale-up", {
+        scrollTrigger: { trigger: ".section-title-container", start: "top 85%" },
+        width: 96, duration: 1, ease: "power3.out", delay: 0.3
+      });
+
+      // Cards animation
+      gsap.fromTo(".service-card", 
+        { y: 60, opacity: 0 },
+        { 
+          scrollTrigger: { trigger: ".services-grid", start: "top 80%" },
+          y: 0, opacity: 1, duration: 0.8, stagger: 0.2, ease: "power3.out"
+        }
+      );
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section ref={sectionRef} id="oferta" className="py-24 bg-gradient-to-b from-brand-light via-white to-white relative">
+       <div className="container mx-auto px-6">
+         <SectionTitle 
+            subtitle="Nasze Filary" 
+            title="Kompleksowe wsparcie w trzech wymiarach" 
+         />
+
+         <div className="services-grid grid md:grid-cols-3 gap-8 mt-16">
            {services.map((service, idx) => (
              <div 
                 key={service.id} 
-                className={`reveal delay-${(idx + 1) * 100} group relative bg-white p-10 transition-all duration-500 ease-out border border-gray-100 hover:border-brand-primary/20 hover:shadow-[0_20px_50px_rgba(45,212,191,0.1)] flex flex-col rounded-none overflow-hidden`}
+                className="service-card group relative bg-white p-10 transition-all duration-500 ease-out border border-gray-100 hover:border-brand-primary/20 hover:shadow-[0_20px_50px_rgba(45,212,191,0.1)] flex flex-col rounded-none overflow-hidden"
              >
                {/* Top Border Animation */}
                <div className="absolute top-0 left-0 w-full h-2 bg-brand-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left z-10"></div>

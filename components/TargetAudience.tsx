@@ -1,14 +1,37 @@
 
-import React from 'react';
-import { SectionTitle } from './SectionTitle';
+import React, { useRef, useEffect } from 'react';
+import gsap from 'gsap';
 
 export const TargetAudience: React.FC = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".target-left", 
+        { x: -100, opacity: 0 },
+        { 
+          scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
+          x: 0, opacity: 1, duration: 1, ease: "power3.out" 
+        }
+      );
+      
+      gsap.fromTo(".target-right", 
+        { x: 100, opacity: 0 },
+        { 
+          scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
+          x: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.2
+        }
+      );
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="py-0 bg-white relative">
+    <section ref={sectionRef} className="py-0 bg-white relative overflow-hidden">
       <div className="grid lg:grid-cols-2">
         
         {/* Youth Column */}
-        <div className="bg-brand-dark text-white px-8 py-24 lg:px-20 lg:py-32 reveal reveal-left relative overflow-hidden">
+        <div className="target-left bg-brand-dark text-white px-8 py-24 lg:px-20 lg:py-32 relative overflow-hidden">
            {/* Texture */}
            <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
            
@@ -47,7 +70,7 @@ export const TargetAudience: React.FC = () => {
         </div>
 
         {/* Parents Column */}
-        <div className="bg-brand-light/50 text-brand-dark px-8 py-24 lg:px-20 lg:py-32 reveal reveal-right">
+        <div className="target-right bg-brand-light/50 text-brand-dark px-8 py-24 lg:px-20 lg:py-32">
             <span className="uppercase tracking-widest text-sm font-bold text-brand-dark/50 mb-4 block">Dla Rodziców</span>
              <h3 className="font-serif text-4xl md:text-5xl font-bold mb-8 tracking-tight">
                Tęsknisz za dzieckiem, które kiedyś znałeś?

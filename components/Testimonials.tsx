@@ -1,9 +1,38 @@
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { SectionTitle } from './SectionTitle';
 import { Quote } from 'lucide-react';
+import gsap from 'gsap';
 
 export const Testimonials: React.FC = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Title Animation - Faster
+      gsap.to(".gsap-fade-up", {
+        scrollTrigger: { trigger: sectionRef.current, start: "top 85%" },
+        y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: "power3.out",
+        onStart: () => gsap.set(".gsap-fade-up", { visibility: "visible" })
+      });
+
+      gsap.to(".gsap-scale-up", {
+        scrollTrigger: { trigger: sectionRef.current, start: "top 85%" },
+        width: 96, duration: 0.6, ease: "power3.out", delay: 0.1
+      });
+
+      // Cards Animation - Snappier
+      gsap.fromTo(".story-card",
+        { y: 40, opacity: 0 },
+        {
+          scrollTrigger: { trigger: ".stories-grid", start: "top 85%" },
+          y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: "power3.out"
+        }
+      );
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
   const stories = [
     {
       title: "Odzyskaliśmy ciszę w domu",
@@ -26,20 +55,18 @@ export const Testimonials: React.FC = () => {
   ];
 
   return (
-    <section className="py-24 bg-brand-light/30 relative">
+    <section ref={sectionRef} className="py-24 bg-brand-light/30 relative">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="reveal">
-           <SectionTitle 
-             subtitle="Historie Zmian" 
-             title="Oni znaleźli drogę" 
-           />
-        </div>
+         <SectionTitle 
+           subtitle="Historie Zmian" 
+           title="Oni znaleźli drogę" 
+         />
 
-        <div className="grid lg:grid-cols-3 gap-8 mt-16">
+        <div className="stories-grid grid lg:grid-cols-3 gap-8 mt-16">
           {stories.map((story, idx) => (
             <div 
               key={idx} 
-              className={`reveal delay-${(idx + 1) * 100} bg-white p-10 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col h-full group rounded-none`}
+              className="story-card bg-white p-10 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col h-full group rounded-none"
             >
               <div className="mb-6 text-brand-primary/20 group-hover:text-brand-primary/40 transition-colors">
                 <Quote size={48} className="rotate-180" />

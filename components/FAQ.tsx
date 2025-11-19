@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+
+import React, { useState, useRef, useEffect } from 'react';
 import { SectionTitle } from './SectionTitle';
 import { Plus, Minus } from 'lucide-react';
+import gsap from 'gsap';
 
 interface FAQItemProps {
   question: string;
@@ -41,6 +43,43 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer, isOpen, onClick }) 
 
 export const FAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Reveal Title
+      gsap.to(".gsap-fade-up", {
+        scrollTrigger: { trigger: sectionRef.current, start: "top 85%" },
+        y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out",
+        onStart: () => gsap.set(".gsap-fade-up", { visibility: "visible" })
+      });
+
+      gsap.to(".gsap-scale-up", {
+        scrollTrigger: { trigger: sectionRef.current, start: "top 85%" },
+        width: 96, duration: 0.8, ease: "power3.out", delay: 0.2
+      });
+
+      // Reveal Left Content
+      gsap.fromTo(".faq-left-content",
+        { x: -30, opacity: 0 },
+        {
+          scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
+          x: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.1
+        }
+      );
+
+      // Reveal Right Content (List)
+      gsap.fromTo(".faq-right-content",
+        { x: 30, opacity: 0 },
+        {
+          scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
+          x: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.2
+        }
+      );
+
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
 
   const faqs = [
     {
@@ -70,7 +109,7 @@ export const FAQ: React.FC = () => {
   };
 
   return (
-    <section id="faq" className="py-24 bg-brand-light relative">
+    <section ref={sectionRef} id="faq" className="py-24 bg-brand-light relative overflow-hidden">
       {/* Decorative pastel blotches */}
       <div className="absolute top-20 left-0 w-64 h-64 bg-white/40 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-20 right-0 w-80 h-80 bg-white/40 rounded-full blur-3xl pointer-events-none"></div>
@@ -78,7 +117,7 @@ export const FAQ: React.FC = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-24">
           {/* Left column: Title & Info */}
-          <div className="lg:w-1/3">
+          <div className="lg:w-1/3 faq-left-content">
             <SectionTitle 
               subtitle="Warto wiedzieć" 
               title="Pytania o e-wizyty" 
@@ -98,7 +137,7 @@ export const FAQ: React.FC = () => {
           </div>
 
           {/* Right column: Accordion */}
-          <div className="lg:w-2/3 bg-white p-8 md:p-10 shadow-xl shadow-brand-dark/5 border border-white rounded-none md:rounded-sm">
+          <div className="lg:w-2/3 bg-white p-8 md:p-10 shadow-xl shadow-brand-dark/5 border border-white rounded-none md:rounded-sm faq-right-content">
             {faqs.map((faq, index) => (
               <FAQItem 
                 key={index}
