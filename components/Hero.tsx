@@ -17,36 +17,37 @@ export const Hero: React.FC = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Changed easing to be slightly snappier, removed initial delay
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
       tl.fromTo(".hero-badge", 
         { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, delay: 0.2 }
+        { y: 0, opacity: 1, duration: 0.5 } 
       )
       .fromTo(".hero-title", 
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, stagger: 0.1 }, 
-        "-=0.4"
+        { y: 30, opacity: 0 }, // Reduced travel distance for quicker feel
+        { y: 0, opacity: 1, duration: 0.7, stagger: 0.05 }, // Tighter stagger
+        "-=0.3" // Increased overlap
       )
       .fromTo(".hero-text",
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8 },
-        "-=0.6"
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5 },
+        "-=0.5"
       )
       .fromTo(".hero-btns",
         { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8 },
-        "-=0.6"
+        { y: 0, opacity: 1, duration: 0.5 },
+        "-=0.4"
       )
       .fromTo(".hero-image-container",
-        { x: 50, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1.2 },
-        "-=0.8"
+        { x: 30, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8 },
+        "-=0.4"
       )
       .fromTo(".hero-decor",
         { scale: 0, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 1, stagger: 0.2 },
-        "-=1"
+        { scale: 1, opacity: 1, duration: 0.6, stagger: 0.1 },
+        "-=0.6"
       );
 
     }, containerRef);
