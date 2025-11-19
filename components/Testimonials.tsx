@@ -9,24 +9,24 @@ export const Testimonials: React.FC = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Title Animation - Faster
+      // Title Animation - Lightning Fast
       gsap.to(".gsap-fade-up", {
-        scrollTrigger: { trigger: sectionRef.current, start: "top 85%" },
-        y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: "power3.out",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 90%" },
+        y: 0, opacity: 1, duration: 0.4, stagger: 0.05, ease: "power2.out",
         onStart: () => gsap.set(".gsap-fade-up", { visibility: "visible" })
       });
 
       gsap.to(".gsap-scale-up", {
-        scrollTrigger: { trigger: sectionRef.current, start: "top 85%" },
-        width: 96, duration: 0.6, ease: "power3.out", delay: 0.1
+        scrollTrigger: { trigger: sectionRef.current, start: "top 90%" },
+        width: 96, duration: 0.4, ease: "power2.out", delay: 0
       });
 
-      // Cards Animation - Snappier
+      // Cards Animation - Super Snappy & Responsive
       gsap.fromTo(".story-card",
-        { y: 40, opacity: 0 },
+        { y: 30, opacity: 0 },
         {
           scrollTrigger: { trigger: ".stories-grid", start: "top 85%" },
-          y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: "power3.out"
+          y: 0, opacity: 1, duration: 0.4, stagger: 0.08, ease: "power2.out"
         }
       );
     }, sectionRef);
