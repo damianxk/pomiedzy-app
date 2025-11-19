@@ -11,6 +11,7 @@ import { ContactForm } from './components/ContactForm';
 import { Values } from './components/Values';
 import { TargetAudience } from './components/TargetAudience';
 import { Testimonials } from './components/Testimonials';
+import { ScrollToTop } from './components/ScrollToTop';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -41,6 +42,7 @@ const App: React.FC = () => {
         <Newsletter />
       </main>
       <Contact />
+      <ScrollToTop />
     </div>
   );
 };
